@@ -27,6 +27,8 @@ class Db {
         await db.execute('''CREATE TABLE activity_types (
     activity_type_id    INTEGER NOT NULL ,
     date    TEXT(255, 0),
+        state    TEXT(255, 0),
+
     PRIMARY KEY(activity_type_id AUTOINCREMENT)
 )''');
       }, version: 1);
@@ -38,8 +40,10 @@ class Db {
 
   Future<bool> insertAlarms(List<Alarm> alarms) async {
     alarms.forEach((element) async {
-      var res = await database
-          .insert("activity_types", {"date": "${element.time.toString()}"});
+      var res = await database.insert("activity_types", {
+        "date": "${element.time.toString()}",
+        "state": element.state,
+      });
       print(res);
     });
   }
@@ -48,7 +52,8 @@ class Db {
     var res = await database.query("activity_types");
     List<Alarm> a = [];
     res.forEach((element) {
-      a.add(Alarm(time: DateTime.parse(element["date"])));
+      a.add(Alarm(
+          time: DateTime.parse(element["date"]), state: element["state"]));
     });
 
     return a;

@@ -154,7 +154,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               contentPadding: EdgeInsets.all(8),
               title: Text(alarm.time.toString()),
               subtitle: Text(alarm.timeToAlarm),
-              trailing: Text("#$index"),
+              trailing: Checkbox(
+                value: alarm.state == "1",
+                onChanged: (v) {
+                  setState(() {
+                    alarm.state = v ? "1" : "0";
+                  });
+                },
+              ),
             ),
           ),
         ),
