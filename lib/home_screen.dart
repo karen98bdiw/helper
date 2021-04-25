@@ -7,11 +7,11 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   DateTime pickedTime;
   final curentDate = DateTime.now();
 
-  final List<Alarm> alarms = [];
+  List<Alarm> alarms = [];
 
   Future<void> pickTime() async {
     var res = await showTimePicker(
@@ -41,7 +41,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused) {
+      print("this is called");
+      Db().insertAlarms(alarms);
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      r();
+    }
+
+    super.didChangeAppLifecycleState(state);
+  }
+
+  void r() async {
+    List<Alarm> res = await Db().read();
+
+    setState(() {
+      alarms = res;
+    });
+  }
+
+  @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    r();
     super.initState();
   }
 

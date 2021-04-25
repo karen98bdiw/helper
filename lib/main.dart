@@ -8,6 +8,7 @@ Future<void> main(List<String> args) async {
 
 Future<void> run() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Db().initDb();
   runApp(MyApp());
 }
 
