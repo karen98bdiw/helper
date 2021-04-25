@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:helper/alarm.dart';
 import 'package:helper/db.dart';
@@ -154,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               contentPadding: EdgeInsets.all(8),
               title: Text(alarm.time.toString()),
               subtitle: Text(alarm.timeToAlarm),
-              trailing: Checkbox(
+              trailing: CupertinoSwitch(
                 value: alarm.state == "1",
                 onChanged: (v) {
                   setState(() {
